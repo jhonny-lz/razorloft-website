@@ -689,8 +689,16 @@ header {
 
 .section-cta {
   text-align: center;
-  margin-top: 2.2rem;
+  margin: 2.2rem auto 0; /* margen top 2.2rem, centrado horizontal */
 }
+
+/* CTA del HOME debajo de las 4 tarjetas de servicios */
+#services .section-cta {
+  width: 100%;
+  display: flex;
+  justify-content: center;   /* centra el botón dentro del contenedor */
+}
+
 
 /* ------------------------
   SERVICES PAGE (FULL MENU)
