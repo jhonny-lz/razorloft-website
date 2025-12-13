@@ -11,7 +11,12 @@
   <!-- Open Graph -->
   <meta property="og:title" content="Razorloft · Gallery" />
   <meta property="og:description" content="Explore Razorloft’s work: haircuts, fades, beard results, clients, the team and the modern barbershop space in Miami." />
+  <meta property="og:image" content="https://www.razorloft.com/assets/img/og-logo.jpg" />
+  <meta property="og:url" content="https://www.razorloft.com/gallery.html" />
   <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Razorloft Barbershop" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,7 +33,7 @@
     <div class="container nav">
       <div class="nav-left">
         <div class="nav-logo-full">
-          <img src="assets/img/RAZORLOFT BLANCO PNG.png" alt="Razorloft logo">
+          <img src="assets/img/logo-blanco-png.png" alt="Razorloft logo">
         </div>
       </div>
 
@@ -37,6 +42,7 @@
         <a href="index.html#about">About</a>
         <a href="services.html#services">Services</a>
         <a href="gallery.html">Gallery</a>
+        <a href="products.html#products">Products</a>
         <a href="index.html#location">Location</a>
       </nav>
 
@@ -79,7 +85,7 @@
       <div class="hero-visual-wrapper">
         <div class="hero-frame">
           <div class="hero-inner">
-            <img src="assets/img/barbero1.jpeg" alt="Razorloft gallery hero" loading="lazy">
+            <img src="assets/img/hero-gallery.jpeg" alt="Razorloft gallery hero" loading="lazy">
             <div class="hero-glow"></div>
           </div>
         </div>
@@ -88,9 +94,6 @@
           <div class="hero-tag-icon">R</div>
           <div>
             <div class="hero-tag-title">Real work, real people</div>
-            <div class="hero-tag-text">
-              Where every cut tells a story.
-            </div>
           </div>
         </div>
 
@@ -117,10 +120,10 @@
       <!-- IMAGE GRID -->
       <div class="gallery-grid-main">
         <div class="gallery-item">
-          <img src="assets/img/barbershop3.png" alt="Razorloft interior" loading="lazy">
+          <img src="assets/img/barbershop3.jpg" alt="Razorloft interior" loading="lazy">
         </div>
         <div class="gallery-item">
-          <img src="assets/img/barbershop4.png" alt="Razorloft barber station" loading="lazy">
+          <img src="assets/img/barbershop4.jpg" alt="Razorloft barber station" loading="lazy">
         </div>
         <div class="gallery-item">
           <img src="assets/img/g1.jpg" alt="Fade result at Razorloft" loading="lazy">
@@ -136,9 +139,6 @@
         </div>
         <div class="gallery-item">
           <img src="assets/img/g5.jpg" alt="Beard trim result" loading="lazy">
-        </div>
-        <div class="gallery-item">
-          <img src="assets/img/productos.jpg" alt="Barber tools and setup" loading="lazy">
         </div>
       </div>
 
@@ -181,64 +181,76 @@
   </footer>
 
   <!-- SCRIPTS -->
-  <script>
-    // Año dinámico
-    document.getElementById("year").textContent = new Date().getFullYear();
+<script>
+  // Año dinámico
+  document.getElementById("year").textContent = new Date().getFullYear();
 
-    // NAV MÓVIL (hamburguesa)
-    const navToggle = document.querySelector('.nav-toggle');
-    const navLinks  = document.getElementById('primary-nav');
+  // NAV MÓVIL (hamburguesa)
+  const navToggle = document.querySelector('.nav-toggle');
+  const navLinks  = document.getElementById('primary-nav');
 
-    if (navToggle && navLinks) {
-      navToggle.addEventListener('click', () => {
-        const isOpen = navLinks.classList.toggle('open');
-        document.body.classList.toggle('body-locked', isOpen);
-        navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  if (navToggle && navLinks) {
+    navToggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      document.body.classList.toggle('body-locked', isOpen);
+      navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+
+    // Cerrar menú al hacer click en un link
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        document.body.classList.remove('body-locked');
+        navToggle.setAttribute('aria-expanded', 'false');
       });
+    });
+  }
 
-      // Cerrar menú al hacer click en un link
-      navLinks.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-          navLinks.classList.remove('open');
-          document.body.classList.remove('body-locked');
-          navToggle.setAttribute('aria-expanded', 'false');
-        });
-      });
+  // LIGHTBOX
+  const lightbox      = document.getElementById('lightbox');
+  const lightboxImg   = document.getElementById('lightbox-img');
+  const lightboxClose = document.getElementById('lightbox-close');
+  const galleryImages = document.querySelectorAll('.gallery-grid-main img');
+
+  const openLightbox = (imgEl) => {
+    // Si el menú móvil está abierto, ciérralo antes
+    if (navLinks && navLinks.classList.contains('open')) {
+      navLinks.classList.remove('open');
+      if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
     }
 
-    // LIGHTBOX
-    const lightbox      = document.getElementById('lightbox');
-    const lightboxImg   = document.getElementById('lightbox-img');
-    const lightboxClose = document.getElementById('lightbox-close');
-    const galleryImages = document.querySelectorAll('.gallery-grid-main img');
+    lightboxImg.src = imgEl.src;
+    lightboxImg.alt = imgEl.alt || '';
+    lightbox.classList.add('open');
+    document.body.classList.add('body-locked'); // ✅ bloquear scroll
+  };
 
-    galleryImages.forEach(img => {
-      img.addEventListener('click', () => {
-        lightboxImg.src = img.src;
-        lightboxImg.alt = img.alt || '';
-        lightbox.classList.add('open');
-      });
-    });
+  const closeLightbox = () => {
+    lightbox.classList.remove('open');
+    lightboxImg.src = '';
+    document.body.classList.remove('body-locked'); // ✅ liberar scroll
+  };
 
-    lightboxClose.addEventListener('click', () => {
-      lightbox.classList.remove('open');
-      lightboxImg.src = '';
-    });
+  galleryImages.forEach(img => {
+    img.addEventListener('click', () => openLightbox(img));
+  });
 
+  if (lightboxClose) {
+    lightboxClose.addEventListener('click', closeLightbox);
+  }
+
+  if (lightbox) {
     lightbox.addEventListener('click', (event) => {
-      if (event.target === lightbox) {
-        lightbox.classList.remove('open');
-        lightboxImg.src = '';
-      }
+      if (event.target === lightbox) closeLightbox();
     });
+  }
 
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && lightbox.classList.contains('open')) {
-        lightbox.classList.remove('open');
-        lightboxImg.src = '';
-      }
-    });
-  </script>
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && lightbox && lightbox.classList.contains('open')) {
+      closeLightbox();
+    }
+  });
+</script>
 
 </body>
 </html>
